@@ -1,0 +1,31 @@
+.background {
+    background-color: white;
+}
+
+.backgroundColor {
+    background-color: white;
+}
+
+.backgroundHeader {
+    background-color: #222D32;
+}
+
+.temperatureColor {
+    background-color: paleturquoise;
+}
+
+.button {
+    padding-top: 3%;
+}
+
+.messageBackground {
+    background-color: paleturquoise;
+}
+
+.messageColor {
+    background-color: #D1EEEE;
+}
+
+.fontFamily {
+    font-family: "Roboto", Arial, sans-serif;
+}
