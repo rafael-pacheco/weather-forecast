@@ -18,7 +18,7 @@
     <script type="text/javascript" src="js/app.module.js"></script>
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav" ng-app="minhaPrevisao">
+<body class="hold-transition skin-blue layout-top-nav" ng-app="weatherForecasts">
 
 <div class="wrapper">
     <div class="main-header">
@@ -53,14 +53,14 @@
                                 <div class="col-md-4 col-sm6 col-xs-12">
                                     <center>
                                         <div class="button">
-                                            <a class="btn btn-bitbucket" ng-click="salvaFavorito(cidade,estado)">
+                                            <a class="btn btn-bitbucket" ng-click="saveFavorite(cidade,estado)">
                                                 <i class="fa fa-thumb-tack"></i>
                                                 Salvar Cidade Favorita
                                             </a>
                                         </div>
 
                                         <div class="button">
-                                            <a class="btn btn-bitbucket" ng-click="consultaPrevisao()">
+                                            <a class="btn btn-bitbucket" ng-click="consultationForecasts()">
                                                 <i class="glyphicon glyphicon-search"></i>
                                                 Buscar Cidade
                                             </a>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="overlay" ng-hide="carregando">
+                        <div class="overlay" ng-hide="loading">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="carregando">
+                        <div class="overlay" ng-hide="loading">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
 
@@ -143,24 +143,24 @@
                             <h5 class="box-title"><strong>Recomendações</strong></h5>
                         </div>
                         <div class="box-body">
-                            <div ng-show="recomendacaoPositivo">
+                            <div ng-show="positiveRecommendation">
                                 <h4>Recomendamos praia...</h4>
                                 <h5>A temperatura para o final de semana estará acima de 25 º</h5>
                             </div>
-                            <div ng-show="recomendacaoNegativo">
+                            <div ng-show="negativeRecommendation">
                                 <h4>Não recomendamos praia...</h4>
                                 <h5>A temperatura para final de semana estará abaixo de 25 º</h5>
                                 <div class="widget-user-image">
                                 </div>
                             </div>
-                            <div ng-show="semFinal">
+                            <div ng-show="withoutWeekend">
                                 <h4>Não recomendamos praia...</h4>
                                 <h5>O final de semana vai demorar...</h5>
                                 <div class="widget-user-image">
                                 </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="carregando">
+                        <div class="overlay" ng-hide="loading">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -238,7 +238,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -271,7 +271,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -337,7 +337,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -370,7 +370,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="carregando">
+                                        <div class="overlay" ng-hide="loading">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -383,10 +383,10 @@
 
             <script type="text/javascript" src="js/components/cidades-estados-1.4-utf8.js"></script>
             <script type="text/javascript" src="js/components/cidadesEstados.js"></script>
+            <script src="bower_components/jquery/dist/jquery.min.js"></script>
             <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
             <script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
             <script src="bower_components/AdminLTE/dist/js/demo.js"></script>
-            <script src="bower_components/jquery/dist/jquery.min.js"></script>
             <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
             <script src="bower_components/Chart.js/Chart.min.js"></script>
             <script src="bower_components/fastclick/lib/fastclick.js"></script>

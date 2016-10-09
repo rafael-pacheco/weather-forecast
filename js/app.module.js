@@ -1,118 +1,116 @@
-var app = angular.module("minhaPrevisao", []);
+var app = angular.module("weatherForecasts", []);
 
 if ((localStorage.estadoCache == undefined ) || (localStorage.cidadeCache == undefined )) {
-    this.estado = "SC";
-    this.cidade = "Blumenau";
+    estado = "SC";
+    cidade = "Blumenau";
 } else {
-    this.estado = localStorage.estadoCache;
-    this.cidade = localStorage.cidadeCache;
+    estado = localStorage.estadoCache;
+    cidade = localStorage.cidadeCache;
 }
 
 app.controller("myCtrlTemp", function ($scope, $http) {
-    $http.get("http://developers.agenciaideias.com.br/tempo/json/" + this.cidade + "-" + this.estado).success(function (response) {
-        $scope.carregaPrevisao(response, this.cidade, this.estado);
+    $http.get("http://developers.agenciaideias.com.br/tempo/json/" + cidade + "-" + estado).success(function (response) {
+        $scope.loadForecasting(response, cidade, estado);
     }).error(function (response) {
-        $scope.msg = "Não existem previsão do tempo para está cidade e estado";
+        $scope.msg = "Não existem previsão do tempo para esta cidade e estado";
         $('#myModal').modal('show');
     });
 
-    $scope.consultaPrevisao = function () {
+    $scope.consultationForecasts = function () {
         if (($scope.cidade == undefined) || ($scope.estado == undefined)) {
-            $scope.msg = "Informe a cidade e estado para consultar a previsão do tempo.";
+            $scope.msg = "Informe a cidade e estado para consulta";
             $('#myModal').modal('show');
         }
         else {
-            $scope.carregaDados($scope.cidade, $scope.estado);
-            $scope.carregando = false;
+            $scope.loadData($scope.cidade, $scope.estado);
+            $scope.loading = false;
         }
     }
 
-    $scope.carregaDados = function (cidade, estado) {
-        $http.get("http://developers.agenciaideias.com.br/tempo/json/" + cidade + "-" + estado).success(function (response) {
-            $scope.carregaPrevisao(response, cidade, estado);
+    $scope.loadData = function (city, state) {
+        $http.get("http://developers.agenciaideias.com.br/tempo/json/" + city + "-" + state).success(function (response) {
+            $scope.loadForecasting(response, city, state);
         }).error(function (response) {
-            $scope.msg = "Não existem previsão do tempo para está cidade e estado";
+            $scope.msg = "Não existem previsão do tempo para esta cidade e estado";
             $('#myModal').modal('show');
         });
     }
 
-    $scope.atualizaPrevisoes = function ($scope, lista) {
-        var maxima = 0;
-        var minima = 99;
-        var dataMaxima;
-        var dataMinima;
+    $scope.updateForecasts = function ($scope, list) {
+        var maximum = 0;
+        var minimum = 99;
+        var maximumDate;
+        var minimumDate;
 
-        for (var i = 0; i < lista.length; i++) {
-            var dia = lista[i];
-            // Temperatura Máxima
-            if (dia.temperatura_max > maxima) {
-                maxima = dia.temperatura_max;
-                dataMaxima = dia.data;
+        for (var i = 0; i < list.length; i++) {
+            var day = list[i];
+            if (day.temperatura_max > maximum) {
+                maximum = day.temperatura_max;
+                maximumDate = day.data;
             }
-            // Temperatura Mínima
-            if (dia.temperatura_min < minima) {
-                minima = dia.temperatura_min;
-                dataMinima = dia.data;
+            if (day.temperatura_min < minimum) {
+                minimum = day.temperatura_min;
+                minimumDate = day.data;
             }
         }
-        $scope.max = maxima;
-        $scope.dtMax = dataMaxima;
-        $scope.min = minima;
-        $scope.dtMin = dataMinima;
+        $scope.max = maximum;
+        $scope.dtMax = maximumDate;
+        $scope.min = minimum;
+        $scope.dtMin = minimumDate;
     }
 
-    $scope.recomendacoes = function ($scope, lista) {
-        $scope.recomendacaoPositivo = "";
-        $scope.recomendacaoNegativo = "";
-        $scope.finalSemana = false;
+    $scope.recommendations = function ($scope, list) {
+        $scope.positiveRecommendation = "";
+        $scope.negativeRecommendation = "";
+        $scope.weekend = false;
 
-        if ($scope.copiaDiaSemana((lista[2].data)) == 'Sábado') {
-            temperatura = lista[3].temperatura_max
-            if (temperatura >= 25) {
-                $scope.recomendacaoPositivo = true;
-                $scope.finalSemana = true;
+        if ($scope.copyDayWeek((list[2].data)) == 'Sábado') {
+            temperature = list[3].temperatura_max
+            if (temperature >= 25) {
+                $scope.positiveRecommendation = true;
+                $scope.weekend = true;
             } else {
-                $scope.recomendacaoNegativo = true;
-                $scope.finalSemana = true;
+                $scope.negativeRecommendation = true;
+                $scope.weekend = true;
             }
         }
 
         for (var i = 3; i < 7; i++) {
-            var dia = "";
-            var temperatura = 0;
+            var day = "";
+            var temperature = 0;
 
-            dia = lista[i].data;
-            dia = $scope.copiaDiaSemana(dia);
-            console.log(dia);
+            day = list[i].data;
+            day = $scope.copyDayWeek(day);
+            console.log(day);
 
-            if (dia == "Sábado") {
-                temperatura = lista[i].temperatura_max;
-                console.log(temperatura);
-                if (temperatura >= 25) {
-                    $scope.recomendacaoPositivo = true;
-                    $scope.finalSemana = true;
+            if (day == "Sábado") {
+                temperature = list[i].temperatura_max;
+                console.log(temperature);
+                if (temperature >= 25) {
+                    $scope.positiveRecommendation = true;
+                    $scope.weekend = true;
                 } else {
-                    $scope.recomendacaoNegativo = true;
-                    $scope.finalSemana = true;
+                    $scope.negativeRecommendation = true;
+                    $scope.weekend = true;
                 }
             }
         }
 
-        if ($scope.finalSemana == false) {
-            $scope.semFinal = true;
+        if ($scope.weekend == false) {
+            $scope.withoutWeekend = true;
         }
     }
 
-    $scope.carregaGrafico = function ($scope, lista) {
+    $scope.loadChart = function ($scope, lista) {
         var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
         var areaChart = new Chart(areaChartCanvas);
 
         var areaChartData = {
-            labels: [$scope.copiaDiaSemana(lista[2].data),
-                $scope.copiaDiaSemana(lista[3].data),
-                $scope.copiaDiaSemana(lista[4].data),
-                $scope.copiaDiaSemana(lista[5].data),
-                $scope.copiaDiaSemana(lista[6].data)],
+            labels: [$scope.copyDayWeek(lista[2].data),
+                $scope.copyDayWeek(lista[3].data),
+                $scope.copyDayWeek(lista[4].data),
+                $scope.copyDayWeek(lista[5].data),
+                $scope.copyDayWeek(lista[6].data)],
             datasets: [
                 {
                     label: "Electronics",
@@ -161,16 +159,25 @@ app.controller("myCtrlTemp", function ($scope, $http) {
             datasetStroke: true,
             datasetStrokeWidth: 2,
             datasetFill: true,
-            legendTemplate: "<ul class='chart-legend'><li><span style='background-color: #c1c7d1'></span>label1</li><li><span style='background-color: #3b8bba'></span>label1</li></ul>",
+            legendTemplate: "" +
+            "<ul class='chart-legend'>" +
+            "<li>" +
+            "<span style='background-color: #c1c7d1'></span>" +
+            "label1" +
+            "</li>" +
+            "<li>" +
+            "<span style='background-color: #3b8bba'></span>" +
+            "label1</li>" +
+            "</ul>",
             maintainAspectRatio: true,
             responsive: true
         };
         areaChart.Line(areaChartData, areaChartOptions);
     }
 
-    $scope.salvaFavorito = function (cid, est) {
+    $scope.saveFavorite = function (cid, est) {
         if ((cid == undefined) || (est == undefined)) {
-            $scope.msg = "Informar a cidade e estado para salvar favorito.";
+            $scope.msg = "Informar a cidade e estado para favoritar";
             $('#myModal').modal('show');
         }
         else {
@@ -181,29 +188,29 @@ app.controller("myCtrlTemp", function ($scope, $http) {
         }
     }
 
-    $scope.copiaDiaSemana = function (data) {
-        var dia = "";
-        for (var i = 0; i < data.length; i++) {
+    $scope.copyDayWeek = function (date) {
+        var day = "";
+        for (var i = 0; i < date.length; i++) {
             var str = "";
-            var str = (data.charAt(i));
-            dia = dia + str;
+            var str = (date.charAt(i));
+            day = day + str;
             if (str == ' ')
                 break;
         }
-        dia = dia.trim();
-        return dia;
+        day = day.trim();
+        return day;
     }
 
-    $scope.carregaPrevisao = function (previsao, cidade, estado) {
-        obj = $scope.myData = previsao;
+    $scope.loadForecasting = function (forecast, city, state) {
+        obj = $scope.myData = forecast;
         lista = $.map(obj, function (el) {
             return el
         });
-        $scope.atualizaPrevisoes($scope, lista);
-        $scope.recomendacoes($scope, lista);
-        $scope.carregaGrafico($scope, lista);
-        $scope.carregando = true;
-        $scope.cidadeAtual = cidade;
-        $scope.estadoAtual = estado;
+        $scope.updateForecasts($scope, lista);
+        $scope.recommendations($scope, lista);
+        $scope.loadChart($scope, lista);
+        $scope.loading = true;
+        $scope.cidadeAtual = city;
+        $scope.estadoAtual = state;
     }
 });
