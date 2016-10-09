@@ -18,7 +18,7 @@
     <script type="text/javascript" src="js/app.module.js"></script>
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav" ng-app="weatherForecasts">
+<body class="hold-transition skin-blue layout-top-nav" ng-app="minhaPrevisao">
 
 <div class="wrapper">
     <div class="main-header">
@@ -53,14 +53,14 @@
                                 <div class="col-md-4 col-sm6 col-xs-12">
                                     <center>
                                         <div class="button">
-                                            <a class="btn btn-warning" ng-click="saveFavorite(cidade,estado)">
+                                            <a class="btn btn-warning" ng-click="salvaFavorito(cidade,estado)">
                                                 <i class="fa fa-thumb-tack"></i>
                                                 Salvar Cidade Favorita
                                             </a>
                                         </div>
 
                                         <div class="button">
-                                            <a class="btn btn-warning" ng-click="consultationForecasts()">
+                                            <a class="btn btn-warning" ng-click="consultaPrevisao()">
                                                 <i class="glyphicon glyphicon-search"></i>
                                                 Buscar Cidade
                                             </a>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
 
@@ -143,24 +143,24 @@
                             <h5 class="box-title"><strong>Recomendações</strong></h5>
                         </div>
                         <div class="box-body">
-                            <div ng-show="positiveRecommendation">
+                            <div ng-show="recomendacaoPositivo">
                                 <h4>Recomendamos praia...</h4>
                                 <h5>A temperatura para o final de semana estará acima de 25 º</h5>
                             </div>
-                            <div ng-show="negativeRecommendation">
+                            <div ng-show="recomendacaoNegativo">
                                 <h4>Não recomendamos praia...</h4>
                                 <h5>A temperatura para final de semana estará abaixo de 25 º</h5>
                                 <div class="widget-user-image">
                                 </div>
                             </div>
-                            <div ng-show="withoutWeekend">
+                            <div ng-show="semFinal">
                                 <h4>Não recomendamos praia...</h4>
                                 <h5>O final de semana vai demorar...</h5>
                                 <div class="widget-user-image">
                                 </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
 
                         <div class="box-body backgroundColor">
                             <div class="row">
-                                <div class="col-md-2 col-sm4 col-xs-12">
+                                <div class="col-md-3 col-sm4 col-xs-12">
                                     <div class="box box-widget widget-user">
                                         <div class="widget-user-header bg-orange">
                                             <h3 class="widget-user-username" ng-bind="myData.previsoes[0].data"></h3>
@@ -205,13 +205,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 col-sm6 col-xs-12">
+                                <div class="col-md-3 col-sm6 col-xs-12">
                                     <div class="box box-widget widget-user">
                                         <div class="widget-user-header bg-orange">
                                             <h6 ng-bind="myData.previsoes[1].data"></h6>
@@ -238,7 +238,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -271,7 +271,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -337,40 +337,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
-                                            <i class="fa fa-refresh fa-spin"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 col-sm6 col-xs-12">
-                                    <div class="box box-widget widget-user">
-                                        <div class="widget-user-header bg-orange">
-                                            <h6 ng-bind="myData.previsoes[5].data"></h6>
-                                        </div>
-                                        <div class="widget-user-image">
-                                            <img class="img-circle" ng-src="{{myData.previsoes[5].imagem}}"
-                                                 ng-model="selectedImg">
-                                        </div>
-                                        <div class="box-footer temperatureColor">
-                                            <div class="row">
-                                                <div class="col-sm-6 border-right">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header">Mínima</h5>
-                                                        <span ng-bind="myData.previsoes[5].temperatura_min +' °'"
-                                                              class="description-text"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 border-right">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header">Máxima</h5>
-                                                        <span ng-bind="myData.previsoes[5].temperatura_max +' °'"
-                                                              class="description-text"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
