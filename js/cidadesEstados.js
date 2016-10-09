@@ -1,9 +1,9 @@
 window.onload = function () {
 
     new dgCidadesEstados({
-        estado: document.getElementById('state'),
-        cidade: document.getElementById('city'),
-        estadoVal: '<%=Request("state") %>',
-        cidadeVal: '<%=Request("city") %>'
+        estado: document.getElementById('estado'),
+        cidade: document.getElementById('cidade'),
+        estadoVal: '<%=Request("estado") %>',
+        cidadeVal: '<%=Request("cidade") %>'
     });
 }

@@ -7,32 +7,18 @@
     <title>Previsão do Tempo</title>
 
     <link rel="shortcut icon" href="img/temperature.ico">
-
-    <script type="text/javascript" src="js/app.module.js"></script>
-    <script type="text/javascript" src="js/cidades-estados-1.4-utf8.js"></script>
-    <script type="text/javascript" src="js/cidadesEstados.js"></script>
-    <script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular.min.js"></script>
-
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/_all-skins.min.css">
-
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
-    <script src="bower_components/AdminLTE/dist/js/demo.js"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="bower_components/Chart.js/Chart.min.js"></script>
-    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.module.js"></script>
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav" ng-app="myForecast">
+<body class="hold-transition skin-blue layout-top-nav" ng-app="minhaPrevisao">
 
 <div class="wrapper">
     <div class="main-header">
@@ -67,14 +53,14 @@
                                 <div class="col-md-4 col-sm6 col-xs-12">
                                     <center>
                                         <div class="button">
-                                            <a class="btn btn-bitbucket" ng-click="saveFavorite(city,state)">
+                                            <a class="btn btn-bitbucket" ng-click="salvaFavorito(cidade,estado)">
                                                 <i class="fa fa-thumb-tack"></i>
                                                 Salvar Cidade Favorita
                                             </a>
                                         </div>
 
                                         <div class="button">
-                                            <a class="btn btn-bitbucket" ng-click="predictionQuery()">
+                                            <a class="btn btn-bitbucket" ng-click="consultaPrevisao()">
                                                 <i class="glyphicon glyphicon-search"></i>
                                                 Buscar Cidade
                                             </a>
@@ -94,8 +80,7 @@
                     <div class="box">
                         <div class="box-body backgroundColor">
                             <h4 class="box-title fontFamily"><strong>Previsão do Tempo:</strong><strong>
-                                {{cidadeAtual +" -
-                                "+estadoAtual}}</strong>
+                                {{cidadeAtual +" - " + estadoAtual}}</strong>
                             </h4>
                         </div>
                     </div>
@@ -117,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -132,19 +117,19 @@
                         <div class="box-body">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><strong>Máxima {{' ' + max +' º'}}</strong></span>
-                                    <span class="info-box-text"><strong>Data {{' ' + dtMax}}</strong></span>
+                                    <span class="info-box-text"><strong>Máxima</strong><strong>{{max +' º'}}</strong></span>
+                                    <span class="info-box-text"><strong>Data</strong><strong>{{dtMax}}</strong></span>
                                 </div>
                             </div>
 
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><strong>Mínima {{' ' + min +' º'}}</strong></span>
-                                    <span class="info-box-text"><strong>Data {{' ' + dtMin}}</strong></span>
+                                    <span class="info-box-text"><strong>Mínima</strong> <strong>{{min +' º'}}</strong></span>
+                                    <span class="info-box-text"><strong>Data</strong><strong>{{dtMin}}</strong></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
 
@@ -155,26 +140,27 @@
                 <div class="col-md-4 col-sm6 col-xs-12">
                     <div class="box backgroundColor">
                         <div class="box-header with-border">
-                            <h5 class="box-title fontFamily"><strong>Recomendações</strong></h5>
+                            <h5 class="box-title"><strong>Recomendações</strong></h5>
                         </div>
-
                         <div class="box-body">
-                            <div ng-show="positiveRecommendation">
-                                <h3>Recomendamos Praia!</h3>
-                                <h4>A temperatura está acima de 25 º</h4>
+                            <div ng-show="recomendacaoPositivo">
+                                <h4>Recomendamos praia...</h4>
+                                <h5>A temperatura para o final de semana estará acima de 25 º</h5>
                             </div>
-
-                            <div ng-show="negativeRecommendation">
-                                <h3>Melhor não ir para a praia...</h3>
-                                <h4>A temperatura estará abaixo de 25 º</h4>
+                            <div ng-show="recomendacaoNegativo">
+                                <h4>Não recomendamos praia...</h4>
+                                <h5>A temperatura para final de semana estará abaixo de 25 º</h5>
+                                <div class="widget-user-image">
+                                </div>
                             </div>
-
-                            <div ng-show="noWeekend">
-                                <h3>Final de semana está longe...</h3>
-                                <h4>Não houve final de semana nos próximos dias</h4>
+                            <div ng-show="semFinal">
+                                <h4>Não recomendamos praia...</h4>
+                                <h5>O final de semana vai demorar...</h5>
+                                <div class="widget-user-image">
+                                </div>
                             </div>
                         </div>
-                        <div class="overlay" ng-hide="loading">
+                        <div class="overlay" ng-hide="carregando">
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                     </div>
@@ -219,7 +205,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -252,7 +238,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -285,7 +271,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -318,7 +304,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -351,7 +337,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -384,7 +370,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="overlay" ng-hide="loading">
+                                        <div class="overlay" ng-hide="carregando">
                                             <i class="fa fa-refresh fa-spin"></i>
                                         </div>
                                     </div>
@@ -394,7 +380,15 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <script type="text/javascript" src="js/cidades-estados-1.4-utf8.js"></script>
+            <script type="text/javascript" src="js/cidadesEstados.js"></script>
+            <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
+            <script src="bower_components/AdminLTE/dist/js/demo.js"></script>
+            <script src="bower_components/jquery/dist/jquery.min.js"></script>
+            <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+            <script src="bower_components/Chart.js/Chart.min.js"></script>
+            <script src="bower_components/fastclick/lib/fastclick.js"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@ var dgCidadesEstados = function (data) {
             data[name] = defaultData[name];
         }
     }
-    var keys = ['state', 'city'];
+    var keys = ['estado', 'cidade'];
     if (data['change']) { //caso change: true, não se trata de um select a ser povoado
         var nome, length = keys.length;
         for (var a = 0; a < length; a++) {
@@ -52,12 +52,12 @@ var dgCidadesEstados = function (data) {
             }
         }
     }
-    this.set(data['state'], data['city']);
+    this.set(data['estado'], data['cidade']);
     this.start();
 
     var nome, length = keys.length;
     for (var i = 0; i < length; i++) {
-        nome = keys[i]; //state e city
+        nome = keys[i]; //estado e cidade
 
         if (this[nome].getAttribute('value')) {
             data[nome + 'Val'] = this[nome].getAttribute('value');
@@ -65,14 +65,14 @@ var dgCidadesEstados = function (data) {
 
         if (data[nome + 'Val']) { //preenche estadoVal e cidadeVal se fornecidos na criação do dgCidadesEstados.
             var options = this[nome].options;
-            if (nome == 'state') this.state.onchange(); //se tiver preenchido o state, dá run() pra preencher as cidades
+            if (nome == 'estado') this.estado.onchange(); //se tiver preenchido o estado, dá run() pra preencher as cidades
             for (var j = 0; j < options.length; j++) { //olha cada linha e vê se é a que quer... aí coloca como selected.
                 if (options[j].tagName == 'OPTION') {
                     if (options[j].value == data[nome + 'Val']) {
                         options[j].setAttribute('selected', true);
-                        if (nome == 'state') { //esses dois passos são necessários pro IE6!
-                            this.state.selectedIndex = j;
-                            this.state.onchange();
+                        if (nome == 'estado') { //esses dois passos são necessários pro IE6!
+                            this.estado.selectedIndex = j;
+                            this.estado.onchange();
                         }
                     }
                 }
@@ -87,27 +87,27 @@ dgCidadesEstados.prototype = {
     estado: document.createElement('select'),
     cidade: document.createElement('select'),
     set: function (estado, cidade) { //define os elementos DOM a serem preenchidos
-        this.state = state;
-        this.state.dgCidadesEstados = this;
-        this.city = city;
-        this.state.onchange = function () {
+        this.estado = estado;
+        this.estado.dgCidadesEstados = this;
+        this.cidade = cidade;
+        this.estado.onchange = function () {
             this.dgCidadesEstados.run()
         };
     },
     start: function () { //preenche os estados
-        var estado = this.state;
-        while (state.childNodes.length) state.removeChild(state.firstChild);
-        for (var i = 0; i < this.estados.length; i++) this.addOption(state, this.estados[i][0], this.estados[i][1]);
+        var estado = this.estado;
+        while (estado.childNodes.length) estado.removeChild(estado.firstChild);
+        for (var i = 0; i < this.estados.length; i++) this.addOption(estado, this.estados[i][0], this.estados[i][1]);
     },
-    run: function () { //preenche as cidades de acordo com o state escolhido
-        var sel = this.state.selectedIndex; // state escolhido
+    run: function () { //preenche as cidades de acordo com o estado escolhido
+        var sel = this.estado.selectedIndex; // estado escolhido
         var itens = this.cidades[sel]; // pega as cidades correspondentes
         var itens_total = itens.length;
 
-        var opts = this.city;
-        while (opts.childNodes.length) opts.removeChild(opts.firstChild); // limpa a list atual
+        var opts = this.cidade;
+        while (opts.childNodes.length) opts.removeChild(opts.firstChild); // limpa a lista atual
 
-        this.addOption(opts, '', '');
+        this.addOption(opts, '', 'Selecione uma cidade');
         for (var i = 0; i < itens_total; i++) this.addOption(opts, itens[i], itens[i]); // vai adicionando as cidades correspondentes
     },
     addOption: function (elm, val, text) {
@@ -117,7 +117,7 @@ dgCidadesEstados.prototype = {
         elm.appendChild(opt);
     },
     estados: [
-        ['', ''], ['AC', 'Acre'], ['AL', 'Alagoas'], ['AM', 'Amazonas'], ['AP', 'Amapá'], ['BA', 'Bahia'],
+        ['', 'Selecione um estado'], ['AC', 'Acre'], ['AL', 'Alagoas'], ['AM', 'Amazonas'], ['AP', 'Amapá'], ['BA', 'Bahia'],
         ['CE', 'Ceará'], ['DF', 'Distrito Federal'], ['ES', 'Espírito Santo'], ['GO', 'Goiás'], ['MA', 'Maranhão'], ['MG', 'Minas Gerais'],
         ['MS', 'Mato Grosso do Sul'], ['MT', 'Mato Grosso'], ['PA', 'Pará'], ['PB', 'Paraíba'], ['PE', 'Pernambuco'], ['PI', 'Piauí'],
         ['PR', 'Paraná'], ['RJ', 'Rio de Janeiro'], ['RN', 'Rio Grande do Norte'], ['RO', 'Rondônia'], ['RR', 'Roraima'], ['RS', 'Rio Grande do Sul'],
