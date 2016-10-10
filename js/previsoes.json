@@ -1,0 +1,38 @@
+"previsoes":[
+  {
+   "data":"Domingo - 09\/10\/2016",
+   "descricao":"Parcialmente Nublado (dia)",
+   "temperatura_max":"24",
+   "temperatura_min":"14",
+   "imagem":"http:\/\/developers.agenciaideias.com.br\/images\/tempo\/30.png"
+  },
+  {
+   "data":"Segunda - 10\/11\/2016",
+   "descricao":"Nublado (dia)",
+   "temperatura_max":"22",
+   "temperatura_min":"14",
+   "imagem":"http:\/\/developers.agenciaideias.com.br\/images\/tempo\/31.png"
+  },
+  {
+   "data":"Ter\u00e7a - 11\/11\/2016",
+   "descricao":"Pancadas de chuva (dia)",
+   "temperatura_max":"21",
+   "temperatura_min":"16",
+   "imagem":"http:\/\/developers.agenciaideias.com.br\/images\/tempo\/26.png"
+  },
+  {
+   "data":"Quarta - 12\/11\/2016",
+   "descricao":"Pancadas de chuva (dia)",
+   "temperatura_max":"23",
+   "temperatura_min":"18",
+   "imagem":"http:\/\/developers.agenciaideias.com.br\/images\/tempo\/26.png"
+  },
+  {
+   "data":"Quinta - 13\/11\/2016",
+   "descricao":"Chuvas com trovoadas (dia)",
+   "temperatura_max":"24",
+   "temperatura_min":"19",
+   "imagem":"http:\/\/developers.agenciaideias.com.br\/images\/tempo\/24.png"
+  }
+ ]
+}
